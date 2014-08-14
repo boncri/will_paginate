@@ -35,7 +35,7 @@ module WillPaginate
       # Returns the subset of +options+ this instance was initialized with that
       # represent HTML attributes for the container element of pagination links.
       def container_attributes
-        @container_attributes ||= @options.except(*(ViewHelpers.pagination_options.keys + [:renderer] - [:class]))
+        @container_attributes ||= @options.except(*(ViewHelpers.pagination_options.keys + [:renderer, :remote] - [:class]))
       end
       
     protected
@@ -88,6 +88,7 @@ module WillPaginate
       end
 
       def link(text, target, attributes = {})
+        attributes['data-remote'] = true if @options[:remote]
         if target.is_a? Fixnum
           attributes[:rel] = rel_value(target)
           target = url(target)
